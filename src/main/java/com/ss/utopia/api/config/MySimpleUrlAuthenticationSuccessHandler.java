@@ -58,9 +58,9 @@ implements AuthenticationSuccessHandler {
   protected String determineTargetUrl(final Authentication authentication) {
 
 	    Map<String, String> roleTargetUrlMap = new HashMap<>();
-	    roleTargetUrlMap.put("ROLE_ADMIN", "/user/read");
-	    roleTargetUrlMap.put("ROLE_AGENT", "/user/read/user_roles");
-	    roleTargetUrlMap.put("ROLE_TRAVELER", "/user/read");
+	    roleTargetUrlMap.put("ROLE_ADMIN", "/admin");
+	    roleTargetUrlMap.put("ROLE_AGENT", "/agent");
+	    roleTargetUrlMap.put("ROLE_TRAVELER", "/traveler");
 	    final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
 
