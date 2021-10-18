@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name="user")
 public class User {
@@ -22,6 +25,7 @@ public class User {
 	
 	String given_name;
 	String family_name;
+	
 	String username;
 	String email;
 	String password;
@@ -31,7 +35,7 @@ public class User {
 		
 	}
 
-	@ManyToOne(optional=false)
+	@ManyToOne()
 	@JoinColumn(name="role_id")
 	private UserRole user_role;
 

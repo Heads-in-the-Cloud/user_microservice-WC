@@ -10,9 +10,10 @@ import org.springframework.data.repository.query.Param;
 
 import com.ss.utopia.api.pojo.User;
 
-public interface UserRepository extends JpaRepository<User, String>{
-
-	Optional<User> findByUsername(String userName);
+public interface UserRepository extends JpaRepository<User, Integer>{
+	
+	
+	Optional<User> findByUsername(@Param("username") String username);
 
 //	@Query(value="SELECT u FROM User u LEFT JOIN BookingAgent ba ON ba.agent_id = u.id LEFT JOIN BookingUser bu ON bu.user_id = u.id WHERE bu.booking_id = :booking_id OR ba.booking_id = :booking_id")
 //	public Optional<User> findUserByBookingId(@Param("booking_id") Integer booking_id);
@@ -26,10 +27,12 @@ public interface UserRepository extends JpaRepository<User, String>{
 	
 	@Query(value="SELECT u FROM User u WHERE u.phone = :phone")
 	public Optional<User> findByPhone(@Param("phone") String phone);
-
-	void deleteById(Integer user_id);
+	
+	@Query(value="DELETE FROM User u WHERE u.id = :id")
+	public Optional<User> deleteByUserId(@Param("id") Integer id);
 	
 	
-	Boolean existsById(Integer user_id);
-
+	void deleteByUsername(String username);
+	
+	
 }

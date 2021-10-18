@@ -1,7 +1,5 @@
 package com.ss.utopia.api.config;
-
 import java.util.Collection;
-
 import java.util.List;
 import java.util.Arrays;
 
@@ -31,7 +29,9 @@ public class UserDetailsImpl implements UserDetails{
 			this.userName=user.getUsername();
 			this.password=user.getPassword();
 			this.active=true;
-			this.authorities= Arrays.asList(new SimpleGrantedAuthority(user.getUser_role().getName()));
+			this.authorities=Arrays.stream(user.getUser_role().getName().split(","))
+					.map(SimpleGrantedAuthority::new)
+					.collect(Collectors.toList()	);
 		}
 		public UserDetailsImpl() {
 			// TODO Auto-generated constructor stub
@@ -80,4 +80,5 @@ public class UserDetailsImpl implements UserDetails{
 		}
 
 	}
+
 
