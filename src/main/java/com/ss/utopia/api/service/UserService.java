@@ -1,5 +1,6 @@
 package com.ss.utopia.api.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
+import org.apache.logging.log4j.message.Message;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -34,18 +36,25 @@ public class UserService {
 	@Autowired
 	SessionFactory sessionFactory;
 
-	public User save(User user) {
+	public User save(User user){
 
+		//prevent unintentional update on existing user with save
+		user.setId(null);
+		
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 
 		return user_repository.save(user);
 
 	}
 
-	public UserRole save(UserRole user_role) {
+	public UserRole save(UserRole user_role) throws SQLException {
 		
 		if(user_role.getUsers() != null) {
 			user_role.getUsers().clear();		
+		}
+
+		if(user_role_repository.existsById(user_role.getId())) {
+			throw new SQLException("Entity with Id already exists");
 		}
 		
 		return user_role_repository.save(user_role);
@@ -116,15 +125,6 @@ public class UserService {
 		return user_to_update;
 
 	}
-
-//	public UserRole update(UserRole user_role) {
-//		
-//		UserRole user_role_update = user_role_repository.findById(user_role.getId()).get();
-//		user_role_update.setName(user_role.getName());
-//		user_role_repository.save(user_role_update);
-//		return user_role_update;
-//		
-//	}
 
 	public void deleteByUsername(String username) {
 		user_repository.deleteByUsername(username);
